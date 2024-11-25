@@ -1,22 +1,16 @@
-// Main application JavaScript
 class SmoothNavigation {
     constructor() {
-        this.mainContent = document.querySelector('main');
-        this.init();
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.init());
+        } else {
+            this.init();
+        }
     }
 
     init() {
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registration successful');
-                })
-                .catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-        }
-
+        this.mainContent = document.querySelector('main');
+        
         // Handle navigation
         document.addEventListener('click', (e) => {
             const link = e.target.closest('nav a');
@@ -32,6 +26,28 @@ class SmoothNavigation {
                 this.navigate(e.state.url, false);
             }
         });
+
+        // Initialize history state
+        if (!window.history.state) {
+            const initialUrl = window.location.href;
+            window.history.replaceState({ url: initialUrl }, '', initialUrl);
+        }
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // Update active state for current page
+        this.updateActiveNav(window.location.href);
     }
 
     async navigate(url, addToHistory = true) {
@@ -64,10 +80,12 @@ class SmoothNavigation {
             }
 
             // Load and execute page-specific scripts
-            this.loadPageScripts(doc);
+            await this.loadPageScripts(doc);
 
         } catch (error) {
             console.error('Navigation error:', error);
+            // На випадок помилки - перезавантажуємо сторінку
+            window.location.href = url;
         } finally {
             // End loading animation
             this.mainContent.style.opacity = '1';
@@ -77,31 +95,37 @@ class SmoothNavigation {
     updateActiveNav(url) {
         const currentPath = new URL(url).pathname;
         document.querySelectorAll('nav a').forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === currentPath);
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
         });
     }
 
-    loadPageScripts(doc) {
+    async loadPageScripts(doc) {
         // Get all script sources from the new page
         const newScripts = Array.from(doc.querySelectorAll('script'))
             .map(script => script.src)
-            .filter(src => src && !src.includes('common.js') && !src.includes('app.js'));
+            .filter(src => src && !src.includes('app.js'));
 
         // Remove old page-specific scripts
         Array.from(document.querySelectorAll('script'))
-            .filter(script => script.src && !script.src.includes('common.js') && !script.src.includes('app.js'))
+            .filter(script => script.src && !script.src.includes('app.js'))
             .forEach(script => script.remove());
 
         // Load new scripts
-        newScripts.forEach(src => {
-            const script = document.createElement('script');
-            script.src = src;
-            document.body.appendChild(script);
-        });
+        for (const src of newScripts) {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.body.appendChild(script);
+            });
+        }
     }
 }
 
-// Initialize smooth navigation when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new SmoothNavigation();
-});
+// Create instance immediately
+const navigation = new SmoothNavigation();
