@@ -11,6 +11,7 @@ class SmoothNavigation {
     init() {
         this.mainContent = document.querySelector('main');
         
+        console.log('init')
         // Handle navigation
         document.addEventListener('click', (e) => {
             const link = e.target.closest('nav a');
@@ -67,6 +68,12 @@ class SmoothNavigation {
             // Update the main content
             const newContent = doc.querySelector('main').innerHTML;
             this.mainContent.innerHTML = newContent;
+
+             // Update the header h1
+             const newHeader = doc.querySelector('header h1');
+             if (newHeader) {
+                 document.querySelector('header h1').textContent = newHeader.textContent;
+             }
 
             // Update the title
             document.title = doc.title;
