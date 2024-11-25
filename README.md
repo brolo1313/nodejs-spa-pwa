@@ -1,16 +1,34 @@
-# Node SPA PWA Starter Kit
+# Node.js SSR + SPA PWA Starter Kit
 
-A modern starter kit for building Single Page Applications (SPA) with Progressive Web App (PWA) features using Node.js, Express, and EJS.
+A modern web application starter kit that combines Server-Side Rendering (SSR) with Single Page Application (SPA) features and Progressive Web App (PWA) capabilities.
 
 ## Features
 
-- 🚀 **Express.js** - Fast, unopinionated web framework for Node.js
-- 📱 **PWA Ready** - Service Worker and Web Manifest included
-- 🎨 **EJS Templates** - Embedded JavaScript templating
-- 📦 **Compression** - Built-in response compression
-- 🎯 **Single Page Application** - Modern SPA architecture
-- 🎨 **Utility CSS Classes** - Bootstrap-like utility classes included
-- 🖼️ **Favicon Support** - Automatic favicon handling
+- **Hybrid SSR + SPA Approach**
+  - Initial Server-Side Rendering for better SEO and faster first paint
+  - Smooth client-side navigation without page reloads
+  - Browser history support (back/forward navigation)
+  - Bookmarkable URLs
+
+- **Progressive Web App (PWA)**
+  - Service Worker for offline support
+  - Web App Manifest
+  - Multiple icon sizes
+  - Theme color support
+
+- **Modern Frontend Features**
+  - Responsive design
+  - Utility CSS classes
+  - Smooth page transitions
+  - Contact form with validation
+  - Modern JavaScript (ES6+)
+
+- **Server Features**
+  - Express.js server
+  - EJS templating
+  - API endpoints
+  - Static file serving
+  - Compression middleware
 
 ## Project Structure
 
@@ -20,28 +38,20 @@ A modern starter kit for building Single Page Applications (SPA) with Progressiv
 │   ├── css/
 │   │   └── style.css      # Main stylesheet with utility classes
 │   ├── js/
-│   │   └── app.js         # Client-side JavaScript
-│   ├── manifest.json      # PWA manifest file
+│   │   ├── app.js         # Main client-side JavaScript with SPA navigation
+│   │   ├── common.js      # Shared functionality
+│   │   ├── about.js       # About page specific JavaScript
+│   │   └── contact.js     # Contact form handling
+│   ├── manifest.json      # PWA manifest
 │   ├── sw.js             # Service Worker
 │   └── favicon.ico       # Favicon
 ├── views/
-│   └── index.ejs         # Main EJS template
-├── server.js             # Express server configuration
-├── package.json          # Project dependencies
-└── README.md            # Project documentation
+│   ├── index.ejs         # Home page template
+│   ├── about.ejs         # About page template
+│   └── contact.ejs       # Contact page template
+├── server.js            # Express server configuration
+└── package.json        # Project dependencies
 ```
-
-## CSS Utilities
-
-The project includes a comprehensive set of utility classes:
-
-- **Margins & Padding**: `m-1` to `m-5`, `p-1` to `p-5`
-- **Display**: `d-none`, `d-block`, `d-flex`, etc.
-- **Flexbox**: `flex-row`, `justify-content-center`, etc.
-- **Sizing**: `w-25`, `w-50`, `w-75`, `w-100`
-- **Colors**: `bg-primary`, `bg-light`, etc.
-- **Typography**: Various text utilities
-- **Borders**: `border`, `rounded`, etc.
 
 ## Getting Started
 
@@ -52,14 +62,9 @@ The project includes a comprehensive set of utility classes:
    ```
 3. Start the development server:
    ```bash
-   npm run dev
+   npm start
    ```
-4. Open http://localhost:3001 in your browser
-
-## Available Scripts
-
-- `npm run dev` - Start development server with nodemon
-- `npm start` - Start production server
+4. Visit http://localhost:3001 in your browser
 
 ## Dependencies
 
@@ -69,24 +74,42 @@ The project includes a comprehensive set of utility classes:
 - serve-favicon
 - nodemon (dev dependency)
 
-## PWA Features
+## Development
 
-- Service Worker for offline functionality
-- Web Manifest for installable experience
-- Theme color configuration
-- Favicon integration
+### Adding New Pages
+
+1. Create a new EJS template in the `views` directory
+2. Add the route in `server.js`
+3. Create page-specific JavaScript in `public/js` (if needed)
+4. Update navigation in the EJS templates
+
+### Modifying Styles
+
+- Add new utility classes in `public/css/style.css`
+- Follow the existing naming conventions
+
+### PWA Features
+
+- Update icons in `public/manifest.json`
+- Modify cache strategy in `public/sw.js`
 
 ## Browser Support
 
-The starter kit is compatible with all modern browsers that support:
-- ES6+ JavaScript
-- Service Workers
-- CSS Grid and Flexbox
+- Modern browsers with Service Worker support
+- Graceful degradation for older browsers
+
+## Security
+
+- Basic input validation
+- Secure static file serving
+- Compression middleware
+- No sensitive data exposure
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests.
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
-## License
-
-This project is licensed under the MIT License.

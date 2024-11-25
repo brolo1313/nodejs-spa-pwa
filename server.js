@@ -27,9 +27,32 @@ app.get('/', (req, res) => {
     });
 });
 
+// About page route
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'Node.js SPA PWA'
+    });
+});
+
+// Contact page route
+app.get('/contact', (req, res) => {
+    res.render('contact', {
+        title: 'Node.js SPA PWA'
+    });
+});
+
 // API routes
 app.get('/api/hello', (req, res) => {
     res.json({ message: 'Hello from API!' }); // Respond with a simple JSON message
+});
+
+// Contact form API endpoint
+app.post('/api/contact', (req, res) => {
+    const { name, email, message } = req.body;
+    // Here you would typically save the message to a database
+    // For now, we'll just log it
+    console.log('Contact form submission:', { name, email, message });
+    res.json({ success: true });
 });
 
 // Start the server and listen on the specified port
