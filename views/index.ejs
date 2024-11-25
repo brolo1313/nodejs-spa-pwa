@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <meta name="theme-color" content="#2196f3">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1><%= title %></h1>
+            <nav>
+                <a href="#" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <div id="content">
+                <!-- Контент буде динамічно оновлюватись -->
+                <h2>Welcome to our SPA!</h2>
+                <p>This is a server-side rendered Single Page Application with PWA capabilities.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Node.js SPA PWA</p>
+        </footer>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        // Реєстрація Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
