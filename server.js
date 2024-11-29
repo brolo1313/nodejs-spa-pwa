@@ -21,8 +21,8 @@ app.set('view engine', 'ejs'); // Set the template engine to EJS
 app.set('views', path.join(__dirname, 'views')); // Set the views directory for EJS templates
 
 // Routes
-app.get('/', (req, res) => {
-    res.render('index', {
+app.get('/home', (req, res) => {
+    res.render('home', {
         title: 'Node.js SPA PWA' // Render the 'index' view with a title
     });
 });
@@ -53,6 +53,11 @@ app.post('/api/contact', (req, res) => {
     // For now, we'll just log it
     console.log('Contact form submission:', { name, email, message });
     res.json({ success: true });
+});
+
+//Redirect any other route to the home page and must be the last route
+app.get('*', (req, res) => {
+    res.redirect('/home');
 });
 
 // Start the server and listen on the specified port

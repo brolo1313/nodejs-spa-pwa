@@ -1,0 +1,11 @@
+{
+    "watch": [
+      "server.js",
+      "public/**/*.js",
+      "views/**/*.ejs"
+    ],
+    "ext": "js,ejs,json",
+    "ignore": [
+      "node_modules/**"
+    ]
+  }
